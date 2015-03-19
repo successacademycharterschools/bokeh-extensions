@@ -1,12 +1,15 @@
+## Getting Started
 This tool expects a button formatted like so:
-```
-<button type="button" class="save-selected" id="ColumnDataSourceID">Save Selected</button>
-```
-Which, as it stands right now, must be added manually.
 
+```
+<button type="button" class="save-selected" id="[ColumnDataSourceID]">Save Selected</button>
+```
+
+Where [ColumnDataSourceID] is the id of the Bokeh.ColumnDataSource object containing the data in question.
+
+## Dependencies
 
 [FileSaver.js](https://github.com/eligrey/FileSaver.js) handles writing the data to disk
-`<script type="text/javascript" src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>`
 
 [JSON2CSV](https://github.com/songpr/json2csv) is a Node module, so [Browserify](http://browserify.org/) is required to allow the browser access to module.
 
