@@ -1,3 +1,10 @@
+This tool expects a button formatted like so:
+```
+<button type="button" class="save-selected" id="ColumnDataSourceID">Save Selected</button>
+```
+Which, as it stands right now, must be added manually.
+
+
 [FileSaver.js](https://github.com/eligrey/FileSaver.js) handles writing the data to disk
 `<script type="text/javascript" src="https://rawgit.com/eligrey/FileSaver.js/master/FileSaver.js"></script>`
 
