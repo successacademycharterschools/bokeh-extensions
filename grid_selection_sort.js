@@ -50,8 +50,7 @@ var selectionShift = function(view){
   for(i = 0; i < rowsToShift.length; i++){
     for(j = 0; j < data.length; j++){
       if(data[j][attributeMatcher] === rowsToShift[i][attributeMatcher]){
-        console.log(data[j].name === rowsToShift[i].name)
-        rowsSpliced.push(data.splice(j, 1)[0])
+        data.splice(j, 1)
       }
     }
   }
