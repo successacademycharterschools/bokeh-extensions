@@ -55,8 +55,8 @@ var setSelectionSort = function(dataSource, columnData){
 var selectionSort = function(view, columnData){
   setSelectionSort(view.data, columnData)
 
-  columns = [{sortCol: columnData, sortAsc:false}]
-  view.data.sort(columns)
+  columns = [{sortCol: columnData}]
+  sortBySelection(columns, view)
   updateSelection(view)
 }
 // Updates view so the rows are highlighted at top
@@ -70,4 +70,41 @@ var updateSelection = function(view){
   view.grid.invalidate()
   view.grid.render()
   view.grid.setSelectedRows(newSelection)
+}
+
+sortBySelection = function(columns, view) {
+  var cols, column, i, record, records, _i, _len;
+
+  cols = (function() {
+    var _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = columns.length; _i < _len; _i++) {
+      column = columns[_i];
+      _results.push([column.sortCol.field, 1]);
+    }
+    return _results;
+  })();
+
+  records = view.data.getRecords();
+
+  records.sort(function(record1, record2) {
+    var field, result, sign, value1, value2, _i, _len, _ref;
+
+    for (_i = 0, _len = cols.length; _i < _len; _i++) {
+      _ref = cols[_i], field = _ref[0], sign = _ref[1];
+      value1 = record1[field];
+      value2 = record2[field];
+      result = value1 === value2 ? 0 : value1 > value2 ? sign : -sign;
+      if (result !== 0) {
+        return result;
+      }
+    }
+    return 0;
+  });
+
+  for (i = _i = 0, _len = records.length; _i < _len; i = ++_i) {
+    record = records[i];
+    this._setItem(i, record);
+  }
+  return this.updateSource();
 }
