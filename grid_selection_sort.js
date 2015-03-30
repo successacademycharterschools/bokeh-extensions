@@ -37,20 +37,33 @@ var tableElement = function(el){
 }
 
 var selectionShift = function(view){
-  var selectedRows = view.grid.getSelectedRows()
+
+  var selectedRowIndices = view.grid.getSelectedRows()
   var rowsToShift = []
   var data = view.data.getRecords()
-  for(i = 0; i < selectedRows.length; i++){
-    rowsToShift.push(data.splice(selectedRows[i], 1)[0])
+  var attributeMatcher = $(".plotdiv").data().sortingMatcher
+
+  for(i = 0; i < selectedRowIndices.length; i++){
+    rowsToShift.push(data.slice(selectedRowIndices[i], (selectedRowIndices[i] + 1))[0])
+  }
+
+  for(i = 0; i < rowsToShift.length; i++){
+    for(j = 0; j < data.length; j++){
+      if(data[j][attributeMatcher] === rowsToShift[i][attributeMatcher]){
+        console.log(data[j].name === rowsToShift[i].name)
+        rowsSpliced.push(data.splice(j, 1)[0])
+      }
+    }
   }
   for(i = 0; i < rowsToShift.length; i++){
     data.unshift(rowsToShift[i])
   }
+
   for(i = 0; i < data.length; i++){
     view.data._setItem(i, data[i])
   }
   var updateSel = []
-  for(i=0; i < selectedRows.length; i++){
+  for(i=0; i < selectedRowIndices.length; i++){
     updateSel.push(i)
   }
   view.data.updateSource()
