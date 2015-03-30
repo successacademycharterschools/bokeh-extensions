@@ -39,25 +39,38 @@ var tableElement = function(el){
 var selectionShift = function(view){
 
   var selectedRowIndices = view.grid.getSelectedRows()
-  var rowsToShift = []
   var data = view.data.getRecords()
-  var attributeMatcher = $(".plotdiv").data().sortingMatcher
 
-  for(i = 0; i < selectedRowIndices.length; i++){
-    rowsToShift.push(data.slice(selectedRowIndices[i], (selectedRowIndices[i] + 1))[0])
-  }
+  var rowsToShift = collectRowsToShift(data, selectedRowIndices)
+
+  spliceOutRows(data, rowsToShift);
 
   for(i = 0; i < rowsToShift.length; i++){
+    data.unshift(rowsToShift[i])
+  }
+  updateData(view, data, selectedRowIndices)
+}
+
+var collectRowsToShift = function(data, selectedRowIndices){
+  var result = []
+  for(i = 0; i < selectedRowIndices.length; i++){
+    result.push(data.slice(selectedRowIndices[i], (selectedRowIndices[i] + 1))[0])
+  }
+  return result;
+}
+
+var spliceOutRows = function(data, rowsToSplice){
+  var attributeMatcher = $(".plotdiv").data().sortingMatcher
+  for(i = 0; i < rowsToSplice.length; i++){
     for(j = 0; j < data.length; j++){
-      if(data[j][attributeMatcher] === rowsToShift[i][attributeMatcher]){
+      if(data[j][attributeMatcher] === rowsToSplice[i][attributeMatcher]){
         data.splice(j, 1)
       }
     }
   }
-  for(i = 0; i < rowsToShift.length; i++){
-    data.unshift(rowsToShift[i])
-  }
+}
 
+var updateData = function(view, data, selectedRowIndices){
   for(i = 0; i < data.length; i++){
     view.data._setItem(i, data[i])
   }
