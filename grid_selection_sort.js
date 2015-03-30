@@ -2,10 +2,10 @@ $(document).ready(function(){
   //Binds sorting function to click event
   $(".plotdiv").on('click', ".bk-ui-state-default.bk-slick-header-column.bk-ui-sortable-handle", function(e){
     if (this.id.match(/slickgrid_\d+_checkbox_selector/) != null) {
-      console.log('hey')
       var columnData = $(this).data("column")
       var dataTableView = findViewObject(tableElement(this), Bokeh.index[modelid])
-      selectionSort(dataTableView, columnData)
+      // selectionSort(dataTableView, columnData)
+      selectionShift(dataTableView);
     }
   })
 })
@@ -35,39 +35,49 @@ var tableElement = function(el){
   })
   return result
 }
-// Creates Sel field and appropriately sets values
-var setSelectionSort = function(dataSource, columnData){
-  columnData.sortable = true
-  dataSource.data.sel = []
 
-  var selectedRows = dataSource.source.attributes.selected
-  var recordsLength = dataSource.getRecords().length
+var selectionShift = function(view){
 
-  for (i = 0; i < recordsLength; i++){
-    dataSource.data.sel[i] = ""
+  var selectedRowIndices = view.grid.getSelectedRows()
+  var data = view.data.getRecords()
+
+  var rowsToShift = collectRowsToShift(data, selectedRowIndices)
+
+  spliceOutRows(data, rowsToShift);
+
+  for(i = 0; i < rowsToShift.length; i++){
+    data.unshift(rowsToShift[i])
   }
-  for(i=0; i<selectedRows.length;i++){
-    dataSource.data.sel[selectedRows[i]] = "selected"
-  }
-  dataSource.sort([{sortCol: columnData, sortAsc:false}])
+  updateData(view, data, selectedRowIndices)
 }
-// Uses Bokeh's DataProvider Sort method to sort by selection
-var selectionSort = function(view, columnData){
-  setSelectionSort(view.data, columnData)
 
-  columns = [{sortCol: columnData, sortAsc:false}]
-  view.data.sort(columns)
-  updateSelection(view)
+var collectRowsToShift = function(data, selectedRowIndices){
+  var result = []
+  for(i = 0; i < selectedRowIndices.length; i++){
+    result.push(data.slice(selectedRowIndices[i], (selectedRowIndices[i] + 1))[0])
+  }
+  return result;
 }
-// Updates view so the rows are highlighted at top
-var updateSelection = function(view){
-  var newSelection = [];
-  for (var i = 0; i < view.data.data.sel.length; i++) {
-    if(view.data.data.sel[i] == "selected"){
-      newSelection.push(i);
+
+var spliceOutRows = function(data, rowsToSplice){
+  var attributeMatcher = $(".plotdiv").data().sortingMatcher
+  for(i = 0; i < rowsToSplice.length; i++){
+    for(j = 0; j < data.length; j++){
+      if(data[j][attributeMatcher] === rowsToSplice[i][attributeMatcher]){
+        data.splice(j, 1)
+      }
     }
-  };
-  view.grid.invalidate()
-  view.grid.render()
-  view.grid.setSelectedRows(newSelection)
+  }
+}
+
+var updateData = function(view, data, selectedRowIndices){
+  for(i = 0; i < data.length; i++){
+    view.data._setItem(i, data[i])
+  }
+  var updateSel = []
+  for(i=0; i < selectedRowIndices.length; i++){
+    updateSel.push(i)
+  }
+  view.data.updateSource()
+  view.grid.setSelectedRows(updateSel)
 }
