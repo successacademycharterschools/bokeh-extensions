@@ -49,7 +49,7 @@ var setSelectionSort = function(dataSource, columnData){
   for(i=0; i<selectedRows.length;i++){
     dataSource.data.sel[selectedRows[i]] = "selected"
   }
-  dataSource.sort([{sortCol: columnData, sortAsc:false}])
+  // dataSource.sort([{sortCol: columnData}])
 }
 // Uses Bokeh's DataProvider Sort method to sort by selection
 var selectionSort = function(view, columnData){
