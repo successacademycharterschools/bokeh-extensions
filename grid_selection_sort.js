@@ -106,5 +106,26 @@ sortBySelection = function(columns, view) {
     record = records[i];
     this._setItem(i, record);
   }
-  return this.updateSource();
+  view.data.updateSource();
+}
+
+var selectionShift = function(view){
+  var selectedRows = view.grid.getSelectedRows()
+  var rowsToShift = []
+  var data = view.data.getRecords()
+  for(i = 0; i < selectedRows.length; i++){
+    rowsToShift.push(data.splice(selectedRows[i], 1)[0])
+  }
+  for(i = 0; i < rowsToShift.length; i++){
+    data.unshift(rowsToShift[i])
+  }
+  for(i = 0; i < data.length; i++){
+    view.data._setItem(i, data[i])
+  }
+  var updateSel = []
+  for(i=0; i < selectedRows.length; i++){
+    updateSel.push(i)
+  }
+  view.data.updateSource()
+  view.grid.setSelectedRows(updateSel)
 }
