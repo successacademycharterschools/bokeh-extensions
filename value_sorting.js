@@ -8,6 +8,10 @@ $(document).ready(function(){
     var optionsString = optionsConstructor(dataSource, fields[i].field)
     $("form#column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
   }
+
+  $("form#column-filters").submit(function(e){
+    e.preventDefault();
+  })
 })
 
 var getFieldNames = function(columns){
