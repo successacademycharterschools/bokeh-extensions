@@ -6,7 +6,6 @@ $(document).ready(function(){
       var parent_id = $(this).closest(".plotdiv").get(0).id
       var modelid = $.grep(Object.keys(Bokeh.index), function (k) { return Bokeh.index[k].el.id == parent_id; })
       var dataTableView = findViewObject(tableElement(this), Bokeh.index[modelid])
-      // selectionSort(dataTableView, columnData)
       selectionShift(dataTableView);
     }
   })
