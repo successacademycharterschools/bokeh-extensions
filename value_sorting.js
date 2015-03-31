@@ -5,8 +5,8 @@ $(document).ready(function(){
   $(".plotdiv").append("<form id='column-filters'><input type='submit'></form>")
 
   for (var i = 0; i < fields.length; i++){
-    var optionsString = optionsConstructor(dataSource, fields[i])
-    $("form#column-filters").append("<select name=" + fields[i] + ">"+ optionsString+"</select>")
+    var optionsString = optionsConstructor(dataSource, fields[i].field)
+    $("form#column-filters").append("<select name=" + fields[i].field + ">"+ optionsString+"</select>")
   }
 })
 
