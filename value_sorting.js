@@ -18,6 +18,9 @@ $(document).ready(function(){
         workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
       }
     }
+    var rowsToSelect = valueFilter(workingFilters, dataSource)
+    dataTableView.grid.setSelectedRows(rowsToSelect)
+    selectionShift(dataTableView)
   })
 })
 
