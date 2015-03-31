@@ -6,7 +6,7 @@ $(document).ready(function(){
 
   for (var i = 0; i < fields.length; i++){
     var optionsString = optionsConstructor(dataSource, fields[i].field)
-    $("form#column-filters").append("<select name=" + fields[i].field + ">"+ optionsString+"</select>")
+    $("form#column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
   }
 })
 
