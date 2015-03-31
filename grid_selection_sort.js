@@ -3,6 +3,7 @@ $(document).ready(function(){
   $(".plotdiv").on('click', ".bk-ui-state-default.bk-slick-header-column.bk-ui-sortable-handle", function(e){
     if (this.id.match(/slickgrid_\d+_checkbox_selector/) != null) {
       var columnData = $(this).data("column")
+      var modelid = $.grep(Object.keys(Bokeh.index), function (k) { return Bokeh.index[k].el.id == this.id; })
       var dataTableView = findViewObject(tableElement(this), Bokeh.index[modelid])
       // selectionSort(dataTableView, columnData)
       selectionShift(dataTableView);
