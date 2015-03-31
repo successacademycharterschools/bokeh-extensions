@@ -53,7 +53,14 @@ var applyValueFilter = function(workingFilters, columns, rows){
     }
     return applyValueFilter(workingFilters, columns, rows);
   }
-  return getUniqueElements(rowIndices)
+}
+
+var rowsIndices = function(array){
+  var result = []
+  for(var i = 0; i < array.length; i++){
+    result.push(i)
+  }
+  return result
 }
 
 var getFieldNames = function(columns){
