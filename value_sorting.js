@@ -19,9 +19,7 @@ $(document).ready(function(){
       }
     }
 
-
     var columns = dataSource.attributes.data
-
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
 
@@ -38,11 +36,13 @@ var applyValueFilter = function(workingFilters, columns, rows){
     var filterToApply = workingFilters.pop()
     var column = columns[filterToApply.name]
     if (rows.length > 0) {
+      var newRows = []
       for(var j = 0; j < rows.length; j++){
-        if(column[rows[j]] != filterToApply.value){
-          rows.splice(j,1)
+        if(column[rows[j]] == filterToApply.value){
+          newRows.push(rows.slice(j,j+1)[0])
         }
       }
+      rows = newRows
     }
     else {
       for(var j = 0; j < column.length; j++){
