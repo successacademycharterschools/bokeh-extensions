@@ -30,15 +30,28 @@ $(document).ready(function(){
   })
 })
 
-var valueFilter = function(workingFilters, dataSource){
-  var rowIndices = []
-  for(var i = 0; i < workingFilters.length; i++){
-    var column = dataSource.attributes.data[workingFilters[i].name]
-    for(var j = 0; j < column.length; j++){
-      if(column[j] === workingFilters[i].value){
-        rowIndices.push(j)
+var applyValueFilter = function(workingFilters, columns, rows){
+  if(workingFilters.length === 0){
+    return rows;
+  }
+  else{
+    var filterToApply = workingFilters.pop()
+    var column = columns[filterToApply.name]
+    if (rows.length > 0) {
+      for(var j = 0; j < rows.length; j++){
+        if(column[rows[j]] != filterToApply.value){
+          rows.splice(j,1)
+        }
       }
     }
+    else {
+      for(var j = 0; j < column.length; j++){
+        if(column[j] == filterToApply.value){
+          rows.push(j)
+        }
+      }
+    }
+    return applyValueFilter(workingFilters, columns, rows);
   }
   return getUniqueElements(rowIndices)
 }
