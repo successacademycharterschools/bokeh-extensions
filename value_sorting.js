@@ -4,6 +4,12 @@ $(document).ready(function(){
   var fields = dataSource.attributes.column_names
 
   $(".plotdiv").append("<form id='column-filters'><input type='submit'></form>")
+
+  for (var i = 0; i < fields.length; i++){
+    var optionsString = optionsConstructor(dataSource, fields[i])
+    $("form#column-filters").append("<select name=" + fields[i] + ">"+ optionsString+"</select>")
+  }
+
 var optionsConstructor = function(source, fieldName){
   var result = "<option value=''></option>";
   var elements = getUniqueElements(source.attributes.data[fieldName])
