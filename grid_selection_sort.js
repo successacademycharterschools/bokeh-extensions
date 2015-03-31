@@ -3,13 +3,19 @@ $(document).ready(function(){
   $(".plotdiv").on('click', ".bk-ui-state-default.bk-slick-header-column.bk-ui-sortable-handle", function(e){
     if (this.id.match(/slickgrid_\d+_checkbox_selector/) != null) {
       var columnData = $(this).data("column")
-      var parent_id = $(this).closest(".plotdiv").get(0).id
-      var modelid = $.grep(Object.keys(Bokeh.index), function (k) { return Bokeh.index[k].el.id == parent_id; })
+      var parentId = $(this).closest(".plotdiv").get(0).id
+      var modelid = findModelID(parentId)
       var dataTableView = findViewObject(tableElement(this), Bokeh.index[modelid])
       selectionShift(dataTableView);
     }
   })
 })
+
+var findModelID = function(parentId){
+  $.grep(Object.keys(Bokeh.index), function(k){
+    return Bokeh.index[k].el.id === parentId
+  })
+}
 // Used to recursively search Bokeh.index
 var findViewObject = function(el, currentNode){
   if (el == currentNode.el ) {
