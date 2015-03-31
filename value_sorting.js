@@ -10,6 +10,15 @@ $(document).ready(function(){
   }
 })
 
+var getFieldNames = function(columns){
+  var result = []
+  for(var i = 0; i < columns.length; i++){
+    var columnData = Bokeh.Collections("TableColumn").get(columns[i].id)
+    result.push({field : columnData.attributes.field, title : columnData.attributes.title})
+  }
+  return result
+}
+
 var optionsConstructor = function(source, fieldName){
   var result = "<option value=''></option>";
   var elements = getUniqueElements(source.attributes.data[fieldName])
