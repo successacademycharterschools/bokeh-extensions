@@ -11,6 +11,13 @@ $(document).ready(function(){
 
   $("form#column-filters").submit(function(e){
     e.preventDefault();
+    var options = $(e.target).find("select");
+    var workingFilters = [];
+    for(var i = 0; i < options.length; i++){
+      if(options[i].type != 'submit' && options[i].selectedOptions[0].value != ""){
+        workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
+      }
+    }
   })
 })
 
