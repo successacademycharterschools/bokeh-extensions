@@ -12,7 +12,7 @@ $(document).ready(function(){
 })
 
 var findModelID = function(parentId){
-  $.grep(Object.keys(Bokeh.index), function(k){
+  return $.grep(Object.keys(Bokeh.index), function(k){
     return Bokeh.index[k].el.id === parentId
   })
 }
