@@ -21,6 +21,19 @@ $(document).ready(function(){
   })
 })
 
+var valueFilter = function(workingFilters, dataSource){
+  var rowIndices = []
+  for(var i = 0; i < workingFilters.length; i++){
+    var column = dataSource.attributes.data[workingFilters[i].name]
+    for(var j = 0; j < column.length; j++){
+      if(column[j] === workingFilters[i].value){
+        rowIndices.push(j)
+      }
+    }
+  }
+  return getUniqueElements(rowIndices)
+}
+
 var getFieldNames = function(columns){
   var result = []
   for(var i = 0; i < columns.length; i++){
