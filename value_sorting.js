@@ -9,6 +9,7 @@ $(document).ready(function(){
     var optionsString = optionsConstructor(dataSource, fields[i])
     $("form#column-filters").append("<select name=" + fields[i] + ">"+ optionsString+"</select>")
   }
+})
 
 var optionsConstructor = function(source, fieldName){
   var result = "<option value=''></option>";
