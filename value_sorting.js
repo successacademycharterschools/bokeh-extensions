@@ -18,7 +18,13 @@ $(document).ready(function(){
         workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
       }
     }
-    var rowsToSelect = valueFilter(workingFilters, dataSource)
+
+
+    var columns = dataSource.attributes.data
+
+    var rows = []
+    var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
+
     dataTableView.grid.setSelectedRows(rowsToSelect)
     selectionShift(dataTableView)
   })
