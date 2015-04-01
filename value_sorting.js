@@ -5,12 +5,13 @@ Bokeh.$(function() {
     var dataTableView = findViewObject(tableEl, Bokeh.index[modelId]);
     var fields = getFieldNames(dataTableView.model.attributes.columns, $(element).data("sortingFields"));
     var dataSource = dataTableView.mget("source");
-    $(element).append("<form class='column-filters'><input type='submit'></form>")
+
+    $(element).append("<form class='column-filters' id="+ element.id +"><input type='submit'></form>")
 
     for (var i = 0; i < fields.length; i++){
       if (fields[i].field != 'name') {
         var optionsString = optionsConstructor(dataSource, fields[i].field)
-        $("form.column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
+        $("form.column-filters#" + element.id).append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
       };
     }
   })
