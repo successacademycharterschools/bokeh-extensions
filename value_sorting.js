@@ -15,7 +15,7 @@ Bokeh.$(function() {
     }
   })
 
-  $("form#column-filters").submit(function(e){
+  $("form.column-filters").submit(function(e){
     e.preventDefault();
     var options = $(e.target).find("select");
     var workingFilters = [];
