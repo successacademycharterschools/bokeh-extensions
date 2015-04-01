@@ -7,10 +7,13 @@ Bokeh.$(function() {
     var dataSource = dataTableView.mget("source");
     $(element).append("<form class='column-filters'><input type='submit'></form>")
 
-  for (var i = 0; i < fields.length; i++){
-    var optionsString = optionsConstructor(dataSource, fields[i].field)
-    $("form#column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
-  }
+    for (var i = 0; i < fields.length; i++){
+      if (fields[i].field != 'name') {
+        var optionsString = optionsConstructor(dataSource, fields[i].field)
+        $("form.column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
+      };
+    }
+  })
 
   $("form#column-filters").submit(function(e){
     e.preventDefault();
