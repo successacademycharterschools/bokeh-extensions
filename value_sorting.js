@@ -76,7 +76,7 @@ var optionsConstructor = function(source, fieldName){
   var result = "<option value=''></option>";
   var elements = getUniqueElements(source.attributes.data[fieldName])
   for(var i = 0; i < elements.length; i++){
-    result += "<option value="+ elements[i] +">" + elements[i] + "</option>"
+    result += "<option value='"+ elements[i].toString() +"'>" + elements[i] + "</option>"
   }
   return result
 }
