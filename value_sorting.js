@@ -1,8 +1,11 @@
-$(document).ready(function(){
-  var dataTableView = findViewObject(this.getElementsByClassName("bk-data-table")[0], Bokeh.index[findModelID($(".plotdiv")[0].id)])
-  var dataSource = dataTableView.mget("source")
-  var fields = getFieldNames(dataTableView.model.attributes.columns)
-  $(".plotdiv").append("<form id='column-filters'><input type='submit'></form>")
+Bokeh.$(function() {
+  $('.plotdiv').each(function(index, element){
+    var modelId = findModelID(element.id);
+    var tableEl = $(element).find(".bk-data-table")[0];
+    var dataTableView = findViewObject(tableEl, Bokeh.index[modelId]);
+    var fields = getFieldNames(dataTableView.model.attributes.columns);
+    var dataSource = dataTableView.mget("source");
+    $(element).append("<form class='column-filters'><input type='submit'></form>")
 
   for (var i = 0; i < fields.length; i++){
     var optionsString = optionsConstructor(dataSource, fields[i].field)
