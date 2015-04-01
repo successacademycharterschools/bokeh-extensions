@@ -3,7 +3,7 @@ Bokeh.$(function() {
     var modelId = findModelID(element.id);
     var tableEl = $(element).find(".bk-data-table")[0];
     var dataTableView = findViewObject(tableEl, Bokeh.index[modelId]);
-    var fields = getFieldNames(dataTableView.model.attributes.columns);
+    var fields = getFieldNames(dataTableView.model.attributes.columns, $(element).data("sortingFields"));
     var dataSource = dataTableView.mget("source");
     $(element).append("<form class='column-filters'><input type='submit'></form>")
 
@@ -69,11 +69,15 @@ var rowsIndices = function(array){
   return result
 }
 
-var getFieldNames = function(columns){
+var getFieldNames = function(columns, sortingFields){
   var result = []
-  for(var i = 0; i < columns.length; i++){
-    var columnData = Bokeh.Collections("TableColumn").get(columns[i].id)
-    result.push({field : columnData.attributes.field, title : columnData.attributes.title})
+  for(var j = 0; j < sortingFields.length; j++){
+    for(var i = 0; i < columns.length; i++){
+      var columnData = Bokeh.Collections("TableColumn").get(columns[i].id)
+      if (columnData.attributes.field == sortingFields[j]) {
+      result.push({field : columnData.attributes.field, title : columnData.attributes.title})
+      };
+    }
   }
   return result
 }
