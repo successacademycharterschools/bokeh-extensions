@@ -25,7 +25,9 @@ Bokeh.$(function() {
         workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
       }
     }
-
+    var modelId = findModelID(this.id);
+    var dataTableView = findViewObject($(document.getElementById(this.id)).find(".bk-data-table")[0], Bokeh.index[modelId])
+    var dataSource = dataTableView.mget("source")
     var columns = dataSource.attributes.data
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
