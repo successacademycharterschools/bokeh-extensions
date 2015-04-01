@@ -1,15 +1,22 @@
-$(document).ready(function(){
-  var dataTableView = findViewObject(this.getElementsByClassName("bk-data-table")[0], Bokeh.index[findModelID($(".plotdiv")[0].id)])
-  var dataSource = dataTableView.mget("source")
-  var fields = getFieldNames(dataTableView.model.attributes.columns)
-  $(".plotdiv").append("<form id='column-filters'><input type='submit'></form>")
+Bokeh.$(function() {
+  $('.plotdiv').each(function(index, element){
+    var modelId = findModelID(element.id);
+    var tableEl = $(element).find(".bk-data-table")[0];
+    var dataTableView = findViewObject(tableEl, Bokeh.index[modelId]);
+    var fields = getFieldNames(dataTableView.model.attributes.columns, $(element).data("sortingFields"));
+    var dataSource = dataTableView.mget("source");
 
-  for (var i = 0; i < fields.length; i++){
-    var optionsString = optionsConstructor(dataSource, fields[i].field)
-    $("form#column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
-  }
+    $(element).append("<form class='column-filters' id="+ element.id +"><input type='submit'></form>")
 
-  $("form#column-filters").submit(function(e){
+    for (var i = 0; i < fields.length; i++){
+      if (fields[i].field != 'name') {
+        var optionsString = optionsConstructor(dataSource, fields[i].field)
+        $("form#" + element.id + ".column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
+      };
+    }
+  })
+
+  $("form.column-filters").submit(function(e){
     e.preventDefault();
     var options = $(e.target).find("select");
     var workingFilters = [];
@@ -18,7 +25,9 @@ $(document).ready(function(){
         workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
       }
     }
-
+    var modelId = findModelID(this.id);
+    var dataTableView = findViewObject($(document.getElementById(this.id)).find(".bk-data-table")[0], Bokeh.index[modelId])
+    var dataSource = dataTableView.mget("source")
     var columns = dataSource.attributes.data
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
@@ -63,11 +72,15 @@ var rowsIndices = function(array){
   return result
 }
 
-var getFieldNames = function(columns){
+var getFieldNames = function(columns, sortingFields){
   var result = []
-  for(var i = 0; i < columns.length; i++){
-    var columnData = Bokeh.Collections("TableColumn").get(columns[i].id)
-    result.push({field : columnData.attributes.field, title : columnData.attributes.title})
+  for(var j = 0; j < sortingFields.length; j++){
+    for(var i = 0; i < columns.length; i++){
+      var columnData = Bokeh.Collections("TableColumn").get(columns[i].id)
+      if (columnData.attributes.field == sortingFields[j]) {
+      result.push({field : columnData.attributes.field, title : columnData.attributes.title})
+      };
+    }
   }
   return result
 }
