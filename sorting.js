@@ -22,8 +22,9 @@ Bokeh.$(function() {
     var options = $(e.target).find("select");
     var workingFilters = [];
     for(var i = 0; i < options.length; i++){
-      if(options[i].type !== 'submit' && options[i].selectedOptions[0].value !== ""){
-        workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
+      if(options[i].type !== 'submit' && options[i].selectedOptions.length > 0){
+        var filterValues = $(options[i].selectedOptions).map(function(i, e){return e.value})
+        workingFilters.push({name: options[i].name, values: filterValues })
       }
     }
     var modelId = findModelID(this.id);
