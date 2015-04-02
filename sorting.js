@@ -136,16 +136,20 @@ var applyValueFilter = function(workingFilters, columns, rows){
     if (rows.length > 0) {
       var newRows = []
       for(var j = 0; j < rows.length; j++){
-        if(column[rows[j]] == filterToApply.value){
-          newRows.push(rows.slice(j,j+1)[0])
+        for(var k = 0; k < filterToApply.values.length; k++){
+          if(column[rows[j]] == filterToApply.values[k]){
+            newRows.push(rows.slice(j,j+1)[0])
+          }
         }
       }
       rows = newRows
     }
     else {
       for(var j = 0; j < column.length; j++){
-        if(column[j] == filterToApply.value){
-          rows.push(j)
+        for(var k = 0; k < filterToApply.values.length; k++){
+          if(column[j] == filterToApply.values[k]){
+            rows.push(j)
+          }
         }
       }
     }
