@@ -12,7 +12,7 @@ Bokeh.$(function() {
     for (var i = 0; i < fields.length; i++){
       if (fields[i].field != 'name') {
         var optionsString = optionsConstructor(dataSource, fields[i].field)
-        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
+        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' multiple title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
       };
     }
   })
