@@ -1,4 +1,6 @@
 Bokeh.$(function() {
+  linkStyleSheet({'href':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css", 'type':'text/css', 'location':'head', 'rel':'stylesheet'});
+  linkScript({'url':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js", 'type':'text/javascript', 'location':'body'});
   $('.plotdiv').each(function(index, element){
     var modelId = findModelID(element.id);
     var tableEl = $(element).find(".bk-data-table")[0];
@@ -6,12 +8,12 @@ Bokeh.$(function() {
     var fields = getFieldNames(dataTableView.model.attributes.columns, $(element).data("sortingFields"));
     var dataSource = dataTableView.mget("source");
 
-    $(element).append("<form class='column-filters' id="+ element.id +"><input type='submit'></form>")
+    $(element).prepend("<form class='column-filters' id="+ element.id +"><div class='btn-group'><button type='submit' class='btn btn-default'>Sort Data</button></div></form>")
 
     for (var i = 0; i < fields.length; i++){
       if (fields[i].field != 'name') {
         var optionsString = optionsConstructor(dataSource, fields[i].field)
-        $("form#" + element.id + ".column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
+        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
       };
     }
   })
@@ -36,6 +38,21 @@ Bokeh.$(function() {
     selectionShift(dataTableView)
   })
 })
+
+var linkScript = function(args){
+  var script = document.createElement('script');
+  script.type = args.type;
+  script.src = args.url
+  $(args.location).append(script);
+}
+
+var linkStyleSheet = function(args){
+  var link = document.createElement('link')
+  link.type = args.type
+  link.rel = args.rel
+  link.href = args.href
+  $(args.location).append(link)
+}
 
 var applyValueFilter = function(workingFilters, columns, rows){
   if(workingFilters.length === 0){
