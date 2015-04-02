@@ -6,12 +6,12 @@ Bokeh.$(function() {
     var fields = getFieldNames(dataTableView.model.attributes.columns, $(element).data("sortingFields"));
     var dataSource = dataTableView.mget("source");
 
-    $(element).append("<form class='column-filters' id="+ element.id +"><input type='submit'></form>")
+    $(element).prepend("<form class='column-filters' id="+ element.id +"><div class='btn-group'><button type='submit' class='btn btn-default'>Sort Data</button></div></form>")
 
     for (var i = 0; i < fields.length; i++){
       if (fields[i].field != 'name') {
         var optionsString = optionsConstructor(dataSource, fields[i].field)
-        $("form#" + element.id + ".column-filters").append("<span>"+fields[i].title+"</span><select name=" + fields[i].field + ">"+ optionsString+"</select>")
+        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
       };
     }
   })
