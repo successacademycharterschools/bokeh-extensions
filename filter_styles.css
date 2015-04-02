@@ -1,3 +1,7 @@
-select{
-  margin: 10px;
+div.btn-group{
+  margin: 10px 0 0 10px !important;
+  /*display: inline-block;*/
+}
+form.column-filters{
+  margin-bottom: 10px;
 }
