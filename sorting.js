@@ -1,5 +1,6 @@
 Bokeh.$(function() {
   linkScript({'url':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js", 'type':'text/javascript', 'location':'body'});
+  $('body').append(noRecordsModal)
   $('.plotdiv').each(function(index, element){
     var modelId = findModelID(element.id);
     var tableEl = $(element).find(".bk-data-table")[0];
