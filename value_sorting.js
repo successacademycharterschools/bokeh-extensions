@@ -37,6 +37,21 @@ Bokeh.$(function() {
   })
 })
 
+var linkScript = function(args){
+  var script = document.createElement('script');
+  script.type = args.type;
+  script.src = args.url
+  $(args.location).append(script);
+}
+
+var linkStyleSheet = function(args){
+  var link = document.createElement('link')
+  link.type = args.type
+  link.rel = args.rel
+  link.href = args.href
+  $(args.location).append(link)
+}
+
 var applyValueFilter = function(workingFilters, columns, rows){
   if(workingFilters.length === 0){
     return rows;
