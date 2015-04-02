@@ -1,5 +1,4 @@
 Bokeh.$(function() {
-  linkStyleSheet({'href':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css", 'type':'text/css', 'location':'head', 'rel':'stylesheet'});
   linkScript({'url':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js", 'type':'text/javascript', 'location':'body'});
   $('.plotdiv').each(function(index, element){
     var modelId = findModelID(element.id);
@@ -200,12 +199,4 @@ var linkScript = function(args){
   script.type = args.type;
   script.src = args.url
   $(args.location).append(script);
-}
-
-var linkStyleSheet = function(args){
-  var link = document.createElement('link')
-  link.type = args.type
-  link.rel = args.rel
-  link.href = args.href
-  $(args.location).append(link)
 }
