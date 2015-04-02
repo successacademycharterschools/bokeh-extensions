@@ -1,3 +1,7 @@
+span.bk-slick-column-name > input{
+  display: none;
+}
+
 div.btn-group{
   margin: 10px 0 0 10px !important;
 }

@@ -12,7 +12,7 @@ Bokeh.$(function() {
     for (var i = 0; i < fields.length; i++){
       if (fields[i].field != 'name') {
         var optionsString = optionsConstructor(dataSource, fields[i].field)
-        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
+        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' multiple title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
       };
     }
   })
@@ -22,8 +22,9 @@ Bokeh.$(function() {
     var options = $(e.target).find("select");
     var workingFilters = [];
     for(var i = 0; i < options.length; i++){
-      if(options[i].type !== 'submit' && options[i].selectedOptions[0].value !== ""){
-        workingFilters.push({name: options[i].name, value: options[i].selectedOptions[0].value})
+      if(options[i].type !== 'submit' && options[i].selectedOptions.length > 0){
+        var filterValues = $(options[i].selectedOptions).map(function(i, e){return e.value})
+        workingFilters.push({name: options[i].name, values: filterValues })
       }
     }
     var modelId = findModelID(this.id);
@@ -135,16 +136,20 @@ var applyValueFilter = function(workingFilters, columns, rows){
     if (rows.length > 0) {
       var newRows = []
       for(var j = 0; j < rows.length; j++){
-        if(column[rows[j]] == filterToApply.value){
-          newRows.push(rows.slice(j,j+1)[0])
+        for(var k = 0; k < filterToApply.values.length; k++){
+          if(column[rows[j]] == filterToApply.values[k]){
+            newRows.push(rows.slice(j,j+1)[0])
+          }
         }
       }
       rows = newRows
     }
     else {
       for(var j = 0; j < column.length; j++){
-        if(column[j] == filterToApply.value){
-          rows.push(j)
+        for(var k = 0; k < filterToApply.values.length; k++){
+          if(column[j] == filterToApply.values[k]){
+            rows.push(j)
+          }
         }
       }
     }
@@ -174,7 +179,7 @@ var getFieldNames = function(columns, sortingFields){
 }
 
 var optionsConstructor = function(source, fieldName){
-  var result = "<option value=''></option>";
+  var result = "";
   var elements = getUniqueElements(source.attributes.data[fieldName])
   for(var i = 0; i < elements.length; i++){
     result += "<option value='"+ elements[i].toString() +"'>" + elements[i] + "</option>"
