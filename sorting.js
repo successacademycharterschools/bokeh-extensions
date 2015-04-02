@@ -34,9 +34,13 @@ Bokeh.$(function() {
     var columns = dataSource.attributes.data
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
-
-    dataTableView.grid.setSelectedRows(rowsToSelect)
-    selectionShift(dataTableView)
+    if(rowsToSelect.length === 0){
+      $('#no-records-modal').modal('show')
+    }
+    else{
+      dataTableView.grid.setSelectedRows(rowsToSelect)
+      selectionShift(dataTableView)
+    }
   })
 
   $(".plotdiv").on('click', ".bk-ui-state-default.bk-slick-header-column.bk-ui-sortable-handle", function(e){
