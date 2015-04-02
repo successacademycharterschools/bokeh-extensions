@@ -1,5 +1,6 @@
 Bokeh.$(function() {
   linkScript({'url':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js", 'type':'text/javascript', 'location':'body'});
+  $('body').append(noRecordsModal)
   $('.plotdiv').each(function(index, element){
     var modelId = findModelID(element.id);
     var tableEl = $(element).find(".bk-data-table")[0];
@@ -7,12 +8,12 @@ Bokeh.$(function() {
     var fields = getFieldNames(dataTableView.model.attributes.columns, $(element).data("sortingFields"));
     var dataSource = dataTableView.mget("source");
 
-    $(element).prepend("<form class='column-filters' id="+ element.id +"><div class='btn-group'><button type='submit' class='btn btn-default'>Sort Data</button></div></form>")
+    $(element).prepend("<form class='column-filters' id="+ element.id +"><div class='btn-group'><button type='submit' class='btn btn-xs btn-warning'>Select Data</button></div></form>")
 
     for (var i = 0; i < fields.length; i++){
       if (fields[i].field != 'name') {
         var optionsString = optionsConstructor(dataSource, fields[i].field)
-        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-style='btn-primary' multiple title='Sort by "+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
+        $("form#" + element.id + ".column-filters").append("<select class='selectpicker' data-width='100px' data-style='btn-xs' multiple title='"+ fields[i].title +"' name=" + fields[i].field + ">"+ optionsString+"</select>")
       };
     }
   })
@@ -33,9 +34,13 @@ Bokeh.$(function() {
     var columns = dataSource.attributes.data
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
-
-    dataTableView.grid.setSelectedRows(rowsToSelect)
-    selectionShift(dataTableView)
+    if(rowsToSelect.length === 0){
+      $('#no-records-modal').modal('show')
+    }
+    else{
+      dataTableView.grid.setSelectedRows(rowsToSelect)
+      selectionShift(dataTableView)
+    }
   })
 
   $(".plotdiv").on('click', ".bk-ui-state-default.bk-slick-header-column.bk-ui-sortable-handle", function(e){
@@ -205,3 +210,5 @@ var linkScript = function(args){
   script.src = args.url
   $(args.location).append(script);
 }
+
+var noRecordsModal = '<div class="modal fade" id="no-records-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-body">No Matching Records Found</div><div class="modal-footer"><button type="button" class="btn btn-warning" data-dismiss="modal">Close</button></div></div></div></div>'
