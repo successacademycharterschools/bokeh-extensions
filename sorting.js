@@ -205,3 +205,5 @@ var linkScript = function(args){
   script.src = args.url
   $(args.location).append(script);
 }
+
+var noRecordsModal = '<div class="modal fade" id="no-records-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-body">No Matching Records Found</div><div class="modal-footer"><button type="button" class="btn btn-warning" data-dismiss="modal">Close</button></div></div></div></div>'
