@@ -1,6 +1,8 @@
 Bokeh.$(function() {
   linkScript({'url':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js", 'type':'text/javascript', 'location':'body'});
+
   $('body').append(noRecordsModal)
+
   $('.plotdiv').each(function(index, element){
     var modelId = findModelID(element.id);
     var tableEl = $(element).find(".bk-data-table")[0];
@@ -34,11 +36,11 @@ Bokeh.$(function() {
     var columns = dataSource.attributes.data
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
+      dataTableView.grid.setSelectedRows(rowsToSelect)
     if(rowsToSelect.length === 0){
       $('#no-records-modal').modal('show')
     }
     else{
-      dataTableView.grid.setSelectedRows(rowsToSelect)
       selectionShift(dataTableView)
     }
   })
@@ -48,7 +50,7 @@ Bokeh.$(function() {
       var columnData = $(this).data("column")
       var parentId = $(this).closest(".plotdiv").get(0).id
       var modelid = findModelID(parentId)
-      var dataTableView = findViewObject(tableElement(this), Bokeh.index[modelid])
+      var dataTableView = findViewObject(this.closest('.bk-data-table'), Bokeh.index[modelid])
       selectionShift(dataTableView);
     }
   })
@@ -74,22 +76,10 @@ var findViewObject = function(el, currentNode){
     return false;
   }
 }
-// Grabs the top level parent element of the datatable in the DOM
-var tableElement = function(el){
-  var result;
-  $(el).parents().each(function(i){
-    if(this.classList.contains("bk-data-table")){
-      result = this
-    }
-  })
-  return result
-}
 
 var selectionShift = function(view){
-
   var selectedRowIndices = view.grid.getSelectedRows()
   var data = view.data.getRecords()
-
   var rowsToShift = collectRowsToShift(data, selectedRowIndices)
 
   spliceOutRows(data, rowsToShift);
@@ -162,14 +152,6 @@ var applyValueFilter = function(workingFilters, columns, rows){
   }
 }
 
-var rowsIndices = function(array){
-  var result = []
-  for(var i = 0; i < array.length; i++){
-    result.push(i)
-  }
-  return result
-}
-
 var getFieldNames = function(columns, sortingFields){
   var result = []
   for(var j = 0; j < sortingFields.length; j++){
@@ -186,6 +168,7 @@ var getFieldNames = function(columns, sortingFields){
 var optionsConstructor = function(source, fieldName){
   var result = "";
   var elements = getUniqueElements(source.attributes.data[fieldName])
+  elements.sort()
   for(var i = 0; i < elements.length; i++){
     result += "<option value='"+ elements[i].toString() +"'>" + elements[i] + "</option>"
   }
