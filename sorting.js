@@ -78,10 +78,8 @@ var findViewObject = function(el, currentNode){
 }
 
 var selectionShift = function(view){
-
   var selectedRowIndices = view.grid.getSelectedRows()
   var data = view.data.getRecords()
-
   var rowsToShift = collectRowsToShift(data, selectedRowIndices)
 
   spliceOutRows(data, rowsToShift);
