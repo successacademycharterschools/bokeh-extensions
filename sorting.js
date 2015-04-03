@@ -164,14 +164,6 @@ var applyValueFilter = function(workingFilters, columns, rows){
   }
 }
 
-var rowsIndices = function(array){
-  var result = []
-  for(var i = 0; i < array.length; i++){
-    result.push(i)
-  }
-  return result
-}
-
 var getFieldNames = function(columns, sortingFields){
   var result = []
   for(var j = 0; j < sortingFields.length; j++){
