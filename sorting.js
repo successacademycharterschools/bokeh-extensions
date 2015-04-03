@@ -1,6 +1,8 @@
 Bokeh.$(function() {
   linkScript({'url':"https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js", 'type':'text/javascript', 'location':'body'});
+
   $('body').append(noRecordsModal)
+
   $('.plotdiv').each(function(index, element){
     var modelId = findModelID(element.id);
     var tableEl = $(element).find(".bk-data-table")[0];
@@ -34,11 +36,11 @@ Bokeh.$(function() {
     var columns = dataSource.attributes.data
     var rows = []
     var rowsToSelect = applyValueFilter(workingFilters, columns, rows)
+      dataTableView.grid.setSelectedRows(rowsToSelect)
     if(rowsToSelect.length === 0){
       $('#no-records-modal').modal('show')
     }
     else{
-      dataTableView.grid.setSelectedRows(rowsToSelect)
       selectionShift(dataTableView)
     }
   })
