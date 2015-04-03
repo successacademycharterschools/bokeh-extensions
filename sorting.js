@@ -50,7 +50,7 @@ Bokeh.$(function() {
       var columnData = $(this).data("column")
       var parentId = $(this).closest(".plotdiv").get(0).id
       var modelid = findModelID(parentId)
-      var dataTableView = findViewObject(tableElement(this), Bokeh.index[modelid])
+      var dataTableView = findViewObject(this.closest('.bk-data-table'), Bokeh.index[modelid])
       selectionShift(dataTableView);
     }
   })
@@ -75,16 +75,6 @@ var findViewObject = function(el, currentNode){
     }
     return false;
   }
-}
-// Grabs the top level parent element of the datatable in the DOM
-var tableElement = function(el){
-  var result;
-  $(el).parents().each(function(i){
-    if(this.classList.contains("bk-data-table")){
-      result = this
-    }
-  })
-  return result
 }
 
 var selectionShift = function(view){
